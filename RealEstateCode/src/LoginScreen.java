@@ -6,57 +6,79 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 class LoginScreen {
 
     private JPanel panel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JComboBox<String> userTypeComboBox; // Added JComboBox for user type
     private JButton loginButton;
-    private JButton goToRegisterButton;
+    private JButton registerButton;
     private Runnable onRegisterButtonClick;
-    private Runnable onLoginSuccess;
+    private Runnable onLoginButtonClick;
 
-    public LoginScreen(Runnable onRegisterButtonClick, Runnable onLoginSuccess) {
+    public LoginScreen(Runnable onRegisterButtonClick, Runnable onLoginButtonClick) {
         this.onRegisterButtonClick = onRegisterButtonClick;
-        this.onLoginSuccess = onLoginSuccess;
+        this.onLoginButtonClick = onLoginButtonClick;
 
-        panel = new JPanel(new GridLayout(3, 2));
+        panel = new JPanel(new GridLayout(4, 2, 10, 10));
 
         JLabel lblUsername = new JLabel("Username:");
-        usernameField = new JTextField();
         JLabel lblPassword = new JLabel("Password:");
+        JLabel lblUserType = new JLabel("User Type:");
+
+        usernameField = new JTextField();
         passwordField = new JPasswordField();
+        userTypeComboBox = new JComboBox<>(new String[]{"Customer", "Seller", "Admin"});
+
         loginButton = new JButton("Login");
-        goToRegisterButton = new JButton("Go to Register");
+        registerButton = new JButton("Register");
 
-        loginButton.addActionListener(e -> {
-            String username = usernameField.getText();
-            char[] passwordChars = passwordField.getPassword();
-            String password = new String(passwordChars);
-
-            if ("root".equals(username) && "root".equals(password)) {
-                JOptionPane.showMessageDialog(null, "Login successful");
-                onLoginSuccess.run();
-            } else {
-                JOptionPane.showMessageDialog(null, "Invalid username or password");
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onLoginButtonClick.run();
             }
-
-            // Clear fields after login attempt
-            usernameField.setText("");
-            passwordField.setText("");
         });
 
-        goToRegisterButton.addActionListener(e -> onRegisterButtonClick.run());
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onRegisterButtonClick.run();
+            }
+        });
 
+        // Add components to the panel
         panel.add(lblUsername);
         panel.add(usernameField);
         panel.add(lblPassword);
         panel.add(passwordField);
+        panel.add(lblUserType);
+        panel.add(userTypeComboBox);
         panel.add(loginButton);
-        panel.add(goToRegisterButton);
+        panel.add(registerButton);
     }
 
     public JPanel getPanel() {
         return panel;
+    }
+
+    public String getUsername() {
+        return usernameField.getText();
+    }
+
+    public String getPassword() {
+        // It's recommended to use getPassword() carefully due to security concerns
+        // For simplicity in this example, we are directly converting it to a String
+        return new String(passwordField.getPassword());
+    }
+
+    public String getUserType() {
+        return (String) userTypeComboBox.getSelectedItem();
     }
 }

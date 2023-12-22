@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RealEstateProjectGUI {
 
@@ -11,6 +12,8 @@ public class RealEstateProjectGUI {
     private RegisterScreen registerScreen;
     private HomeScreen homeScreen;
     private SearchScreen searchScreen;
+    private SellerScreen sellerScreen; // Added SellerScreen reference
+
 
     public RealEstateProjectGUI() {
         frame = new JFrame("Real Estate Project");
@@ -20,10 +23,11 @@ public class RealEstateProjectGUI {
 
         mainPanel = new JPanel(new CardLayout());
 
-        loginScreen = new LoginScreen(this::showRegisterScreen, this::showHomeScreen);
+         loginScreen = new LoginScreen(this::showRegisterScreen, this::verifyLogin);
         registerScreen = new RegisterScreen(this::showLoginScreen);
         homeScreen = new HomeScreen(this::showSearchScreen);
-        searchScreen = new SearchScreen();
+        searchScreen = new SearchScreen(this::showHomeScreen);
+        sellerScreen = new SellerScreen(); // Initialize SellerScreen
 
         mainPanel.add(loginScreen.getPanel(), "Login");
         mainPanel.add(registerScreen.getPanel(), "Register");
@@ -46,7 +50,7 @@ public class RealEstateProjectGUI {
         loginScreen = new LoginScreen(this::showRegisterScreen, this::showHomeScreen);
         registerScreen = new RegisterScreen(this::showLoginScreen);
         homeScreen = new HomeScreen(this::showSearchScreen);
-        searchScreen = new SearchScreen();
+        searchScreen = new SearchScreen(this::showHomeScreen);
 
         mainPanel.add(loginScreen.getPanel(), "Login");
         mainPanel.add(registerScreen.getPanel(), "Register");
@@ -79,6 +83,27 @@ public class RealEstateProjectGUI {
         CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
         cardLayout.show(mainPanel, "Search");
     }
+    private void verifyLogin() {
+    // Retrieve entered credentials from the login screen
+    String enteredUsername = loginScreen.getUsername();
+    String enteredPassword = loginScreen.getPassword();
+    String selectedUserType = loginScreen.getUserType();
+
+    // Check specifically for the credentials "Ahmed" as username, "Ahmed" as password, and user type "Customer"
+    if ("Ahmed".equals(enteredUsername) && "Ahmed".equals(enteredPassword) && "Customer".equals(selectedUserType)) {
+        showHomeScreen(); // Redirect to the home screen
+    } else if ("alaa".equals(enteredUsername) && "alaa".equals(enteredPassword) && "Seller".equals(selectedUserType)) {
+        showSellerScreen();
+    } else {
+        // Failed login
+        JOptionPane.showMessageDialog(frame, "Invalid credentials. Please try again.");
+    }
+}
+    private void showSellerScreen() {
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+        cardLayout.show(mainPanel, "Seller");
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RealEstateProjectGUI());

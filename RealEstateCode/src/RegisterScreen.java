@@ -1,47 +1,50 @@
-
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class RegisterScreen {
 
     private JPanel panel;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JTextField emailField;
+    private JComboBox<String> userTypeComboBox; // Added JComboBox for user type
     private JButton registerButton;
-    private JButton goToLoginButton;
-    private Runnable onLoginButtonClick;
+    private JButton backButton;
+    private Runnable onBackButtonClick;
 
-    public RegisterScreen(Runnable onLoginButtonClick) {
-        this.onLoginButtonClick = onLoginButtonClick;
+    public RegisterScreen(Runnable onBackButtonClick) {
+        this.onBackButtonClick = onBackButtonClick;
 
-        panel = new JPanel(new GridLayout(4, 2));
+        panel = new JPanel(new GridLayout(5, 2, 10, 10));
 
         JLabel lblUsername = new JLabel("Username:");
-        usernameField = new JTextField();
         JLabel lblPassword = new JLabel("Password:");
+        JLabel lblUserType = new JLabel("User Type:");
+
+        usernameField = new JTextField();
         passwordField = new JPasswordField();
-        JLabel lblEmail = new JLabel("Email:");
-        emailField = new JTextField();
+        userTypeComboBox = new JComboBox<>(new String[]{"Customer", "Seller", "Admin"});
+
         registerButton = new JButton("Register");
-        goToLoginButton = new JButton("Go to Login");
+        backButton = new JButton("Back");
 
-        registerButton.addActionListener(e -> JOptionPane.showMessageDialog(null, "Register button clicked"));
-        goToLoginButton.addActionListener(e -> onLoginButtonClick.run());
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onBackButtonClick.run();
+            }
+        });
 
+        // Add components to the panel
         panel.add(lblUsername);
         panel.add(usernameField);
         panel.add(lblPassword);
         panel.add(passwordField);
-        panel.add(lblEmail);
-        panel.add(emailField);
+        panel.add(lblUserType);
+        panel.add(userTypeComboBox);
         panel.add(registerButton);
-        panel.add(goToLoginButton);
+        panel.add(backButton);
     }
 
     public JPanel getPanel() {
