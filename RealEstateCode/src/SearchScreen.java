@@ -1,39 +1,41 @@
-import javax.swing.*;
-import java.awt.*;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
-public class SearchScreen {
+class SearchScreen {
 
     private JPanel panel;
-    private JTextField searchField;
+    private JButton returnButton;
+    private Runnable onReturnButtonClick;
 
-    private ActionListener onHome;
+    public SearchScreen(Runnable onReturnButtonClick) {
+        this.onReturnButtonClick = onReturnButtonClick;
 
-    public SearchScreen(ActionListener onHome) {
-        this.onHome = onHome;
+        panel = new JPanel(new BorderLayout());
 
-        panel = new JPanel(new GridLayout(2, 1, 10, 10));
+        // Create components for the SearchScreen
+        JLabel searchLabel = new JLabel("Search Screen", SwingConstants.CENTER);
 
-        JLabel lblSearch = new JLabel("Enter search criteria:");
-        searchField = new JTextField();
+        // Create a return button
+        returnButton = new JButton("Return to Home");
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onReturnButtonClick.run();
+            }
+        });
 
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(e -> search());
-
-        JButton homeButton = new JButton("Home");
-        homeButton.addActionListener(onHome);
-
-        panel.add(lblSearch);
-        panel.add(searchField);
-        panel.add(searchButton);
-        panel.add(homeButton);
-    }
-
-    private void search() {
-        // Implement logic for searching
-        // You may want to display search results or update the HomeScreen
-        JOptionPane.showMessageDialog(panel, "Searching for: " + searchField.getText());
+        // Add components to the panel
+        panel.add(searchLabel, BorderLayout.NORTH);
+        panel.add(returnButton, BorderLayout.SOUTH);
     }
 
     public JPanel getPanel() {
