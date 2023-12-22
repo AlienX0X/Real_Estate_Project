@@ -1,41 +1,39 @@
-
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
-class SearchScreen {
+public class SearchScreen {
 
     private JPanel panel;
-    private JButton returnButton;
-    private Runnable onReturnButtonClick;
+    private JTextField searchField;
 
-    public SearchScreen(Runnable onReturnButtonClick) {
-        this.onReturnButtonClick = onReturnButtonClick;
+    private ActionListener onHome;
 
-        panel = new JPanel(new BorderLayout());
+    public SearchScreen(ActionListener onHome) {
+        this.onHome = onHome;
 
-        // Create components for the SearchScreen
-        JLabel searchLabel = new JLabel("Search Screen", SwingConstants.CENTER);
+        panel = new JPanel(new GridLayout(2, 1, 10, 10));
 
-        // Create a return button
-        returnButton = new JButton("Return to Home");
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onReturnButtonClick.run();
-            }
-        });
+        JLabel lblSearch = new JLabel("Enter search criteria:");
+        searchField = new JTextField();
 
-        // Add components to the panel
-        panel.add(searchLabel, BorderLayout.NORTH);
-        panel.add(returnButton, BorderLayout.SOUTH);
+        JButton searchButton = new JButton("Search");
+        searchButton.addActionListener(e -> search());
+
+        JButton homeButton = new JButton("Home");
+        homeButton.addActionListener(onHome);
+
+        panel.add(lblSearch);
+        panel.add(searchField);
+        panel.add(searchButton);
+        panel.add(homeButton);
+    }
+
+    private void search() {
+        // Implement logic for searching
+        // You may want to display search results or update the HomeScreen
+        JOptionPane.showMessageDialog(panel, "Searching for: " + searchField.getText());
     }
 
     public JPanel getPanel() {
