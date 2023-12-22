@@ -1,14 +1,7 @@
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.net.URL;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 class HomeScreen {
 
@@ -23,13 +16,14 @@ class HomeScreen {
 
         JLabel lblWelcome = new JLabel("Welcome to Real Estate Project!", SwingConstants.CENTER);
         lblWelcome.setFont(new Font("Arial", Font.BOLD, 20));
-        
-        // Add an image to the panel
-        ImageIcon imageIcon = createImageIcon("pexels-binyamin-mellish-186077.jpg"); // Replace with the actual image file
-        if (imageIcon != null) {
-            JLabel imageLabel = new JLabel(imageIcon);
-            panel.add(imageLabel, BorderLayout.CENTER);
-        }
+
+        // Create a panel for images using GridLayout
+        JPanel imagePanel = new JPanel(new GridLayout(1, 3, 10, 10));
+
+        // Add images with descriptions to the imagePanel
+        imagePanel.add(createImagePanel("/images/pexels-binyamin-mellish-186077.jpg", "Image 1 Description","price 1"));
+        imagePanel.add(createImagePanel("image2.jpg", "Image 2 Description","price 2"));
+        imagePanel.add(createImagePanel("image3.jpg", "Image 3 Description","price 3"));
 
         // Add details text to the panel
         JTextArea detailsTextArea = new JTextArea();
@@ -44,8 +38,9 @@ class HomeScreen {
         goToSearchButton = new JButton("Go to Search");
         goToSearchButton.addActionListener(e -> onGoToSearchButtonClick.run());
 
-        // Add components to the panel
+        // Add components to the main panel
         panel.add(lblWelcome, BorderLayout.NORTH);
+        panel.add(imagePanel, BorderLayout.CENTER);
         panel.add(detailsTextArea, BorderLayout.SOUTH);
         panel.add(goToSearchButton, BorderLayout.PAGE_END);
     }
@@ -54,13 +49,46 @@ class HomeScreen {
         return panel;
     }
 
+    // Method to create an image panel with description and space
+    private JPanel createImagePanel(String fileName, String description, String price) {
+    JPanel imagePanel = new JPanel();
+    imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+
+    ImageIcon imageIcon = createImageIcon(fileName);
+    JLabel imageLabel = new JLabel(imageIcon);
+    imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    JTextArea descriptionArea = new JTextArea(description);
+    descriptionArea.setEditable(false);
+    descriptionArea.setLineWrap(true);
+    descriptionArea.setWrapStyleWord(true);
+    descriptionArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    // Set preferred size based on the text content
+    descriptionArea.setPreferredSize(new Dimension(200, descriptionArea.getPreferredSize().height));
+
+    JLabel priceLabel = new JLabel("Price: " + price);
+    priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    imagePanel.add(imageLabel);
+    imagePanel.add(descriptionArea);
+    imagePanel.add(priceLabel);
+
+    return imagePanel;
+}
+
+
     // Method to create an image icon from the file name
     private ImageIcon createImageIcon(String fileName) {
         URL imgUrl = getClass().getResource(fileName);
         if (imgUrl != null) {
-            return new ImageIcon(imgUrl);
+            ImageIcon imageIcon = new ImageIcon(imgUrl);
+            // Resize the image to the specified width and height
+            Image scaledImage = imageIcon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaledImage);
         } else {
             System.err.println("Couldn't find file: " + fileName);
             return null;
         }
-    }}
+    }
+}
