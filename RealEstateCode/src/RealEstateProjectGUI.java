@@ -1,14 +1,13 @@
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class RealEstateProjectGUI {
 
     private JFrame frame;
     private JPanel mainPanel;
 
-    private LoginScreen loginScreen;
+    private final LoginScreen loginScreen;
     private RegisterScreen registerScreen;
     private HomeScreen homeScreen;
     private SearchScreen searchScreen;
@@ -76,7 +75,7 @@ public class RealEstateProjectGUI {
             showHomeScreen(); // Redirect to the home screen
         } else if ("alaa".equals(enteredUsername) && "alaa".equals(enteredPassword) && "Seller".equals(selectedUserType)) {
             showSellerScreen(); // Redirect to the seller screen
-        
+
         } else {
             // Failed login
             JOptionPane.showMessageDialog(frame, "Invalid credentials. Please try again.");

@@ -1,17 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-class RegisterScreen {
+public class RegisterScreen {
 
-    private JPanel panel;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JComboBox<String> userTypeComboBox; // Added JComboBox for user type
-    private JButton registerButton;
-    private JButton backButton;
-    private Runnable onBackButtonClick;
+    private final JPanel panel;
+    private final JTextField usernameField;
+    private final JPasswordField passwordField;
+    private final UserTypeComboBox userTypeComboBox;
+    private final RegisterButton registerButton;
+    private final BackButton backButton;
+
+    private final Runnable onBackButtonClick;
 
     public RegisterScreen(Runnable onBackButtonClick) {
         this.onBackButtonClick = onBackButtonClick;
@@ -24,17 +23,9 @@ class RegisterScreen {
 
         usernameField = new JTextField();
         passwordField = new JPasswordField();
-        userTypeComboBox = new JComboBox<>(new String[]{"Customer", "Seller", "Admin"});
-
-        registerButton = new JButton("Register");
-        backButton = new JButton("Back");
-
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onBackButtonClick.run();
-            }
-        });
+        userTypeComboBox = new UserTypeComboBox();
+        registerButton = new RegisterButton();
+        backButton = new BackButton(onBackButtonClick);
 
         // Add components to the panel
         panel.add(lblUsername);
@@ -42,9 +33,9 @@ class RegisterScreen {
         panel.add(lblPassword);
         panel.add(passwordField);
         panel.add(lblUserType);
-        panel.add(userTypeComboBox);
-        panel.add(registerButton);
-        panel.add(backButton);
+        panel.add(userTypeComboBox.getComboBox());
+        panel.add(registerButton.getButton());
+        panel.add(backButton.getButton());
     }
 
     public JPanel getPanel() {
