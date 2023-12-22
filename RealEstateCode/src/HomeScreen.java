@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.swing.*;
 
@@ -21,18 +23,20 @@ class HomeScreen {
         JPanel imagePanel = new JPanel(new GridLayout(1, 3, 10, 10));
 
         // Add images with descriptions to the imagePanel
-        imagePanel.add(createImagePanel("/images/pexels-binyamin-mellish-186077.jpg", "Image 1 Description","price 1"));
-        imagePanel.add(createImagePanel("image2.jpg", "Image 2 Description","price 2"));
-        imagePanel.add(createImagePanel("image3.jpg", "Image 3 Description","price 3"));
+        imagePanel.add(createImagePanel("/images/pexels-binyamin-mellish-186077.jpg", "Home in Newyork City","1 Million$"));
+        imagePanel.add(createImagePanel("/images/house 1.jpg", "Home in Washton City","2 Million$"));
+        imagePanel.add(createImagePanel("/images/house 2.jpg", "Home in Cairo City","3 Million$"));
 
         // Add details text to the panel
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsTextArea.setLineWrap(true);
         detailsTextArea.setWrapStyleWord(true);
-        detailsTextArea.setText("Explore our real estate listings and find your dream home!\n\n"
-                + "Our platform offers a wide range of properties in various locations.\n"
-                + "Start your search now!");
+        detailsTextArea.setText("""
+                                Explore our real estate listings and find your dream home!
+                                
+                                Our platform offers a wide range of properties in various locations.
+                                Start your search now!""");
 
         // Add a button to navigate to the search screen
         goToSearchButton = new JButton("Go to Search");
@@ -70,9 +74,35 @@ class HomeScreen {
     JLabel priceLabel = new JLabel("Price: " + price);
     priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+    // Create buttons for Buy and Save to Favorites
+    JButton buyButton = new JButton("Buy");
+    buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    JButton saveButton = new JButton("Save to Favorites");
+    saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+    // Add action listeners for the buttons
+    buyButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Add your buy button logic here
+            System.out.println("Buy button clicked");
+        }
+    });
+
+    saveButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Add your save to favorites button logic here
+            System.out.println("Save to Favorites button clicked");
+        }
+    });
+
     imagePanel.add(imageLabel);
     imagePanel.add(descriptionArea);
     imagePanel.add(priceLabel);
+    imagePanel.add(buyButton);
+    imagePanel.add(saveButton);
 
     return imagePanel;
 }
